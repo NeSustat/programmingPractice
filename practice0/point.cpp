@@ -23,37 +23,46 @@ struct Square{
 };
 
 
+
 int main(){
-    int a;
+    int opt;
     std::cout << "circle = 1\nsquare = 2\n";
-    std::cin >> a; 
-    if (a == 1){
-        Circle firstCircle;
+    std::cin >> opt; 
+    while (opt != 1 || opt != 2){
+        switch (opt) {
+        case 1:
+            Circle firstCircle;
         
-        //fill
-        std::cout << "write X, Y and radius\n";
-        std::cin >> firstCircle.center.x >> firstCircle.center.y >> 
-            firstCircle.radius;
-        firstCircle.len = 2 * pi * firstCircle.radius;
-        firstCircle.square = pi * firstCircle.radius * 
-            firstCircle.radius;
-        
-        //print 
-        std::cout << "circle length: " << firstCircle.len << std::endl <<
-            "the area of the circle: " << firstCircle.square;
-    } else if (a == 2){
-        Square firstSquare;
-        
-        //fill
-        std::cout << "write X, Y and side length\n";
-        std::cin >> firstSquare.leftUp.x >> firstSquare.leftUp.y >> 
-            firstSquare.side;
-        firstSquare.square = firstSquare.side * firstSquare.side;
-        firstSquare.perimeter = 4 * firstSquare.side;
+            //fill
+            std::cout << "write X, Y and radius\n";
+            std::cin >> firstCircle.center.x >> firstCircle.center.y >> 
+                firstCircle.radius;
+            firstCircle.len = 2 * pi * firstCircle.radius;
+            firstCircle.square = pi * firstCircle.radius * 
+                firstCircle.radius;
+            
+            //print 
+            std::cout << "circle length: " << firstCircle.len << std::endl <<
+                "the area of the circle: " << firstCircle.square;
+            break;
+        case 2:
+            Square firstSquare;
+            
+            //fill
+            std::cout << "write X, Y and side length\n";
+            std::cin >> firstSquare.leftUp.x >> firstSquare.leftUp.y >> 
+                firstSquare.side;
+            firstSquare.square = firstSquare.side * firstSquare.side;
+            firstSquare.perimeter = 4 * firstSquare.side;
 
-        //print
-        std::cout << "square area: " << firstSquare.square << std::endl <<
-            "the perimeter of the square: " << firstSquare.perimeter; 
+            //print
+            std::cout << "square area: " << firstSquare.square << std::endl <<
+                "the perimeter of the square: " << firstSquare.perimeter; 
+            break;
+        default:
+            sdt::cout << "oops, something went wrong\nwrite X, Y and radius\n";
+            std::cin >> opt;
+            break;
+        }
     }
-
 }
