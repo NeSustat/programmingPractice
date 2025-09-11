@@ -3,17 +3,17 @@
 #include <iostream>
 #include <cmath>
 
-const double errRate = 10^-5;
+const double errRate = 1e-5;
 
 //проверка точки с кругом
-void checkPointInsideCircle(Circle* circle, Dots* dots){
+void checkPointInsideShape(Circle* circle, Dots* dots){
     double difX = abs(circle->center.x - dots->x);
     double difY = abs(circle->center.y - dots->y);
     double difPoint = sqrt((difX * difX) + (difY * difY));
     if (difPoint < circle->radius + errRate){
-        std::cout << "Yes\n";
+        std::cout << "Point inside\n";
     } else {
-        std::cout << "No\n";
+        std::cout << "Point not inside\n";
     }
 }
 
@@ -23,14 +23,14 @@ void checkPointOnCont(Circle* circle, Dots* dots){
     double difPoint = sqrt((difX * difX) + (difY * difY));
     if (difPoint <= circle->radius + errRate &&
             difPoint >= circle->radius - errRate){
-        std::cout << "Yes\n";
+        std::cout << "Point on the contour\n";
     } else {
-        std::cout << "No\n";
+        std::cout << "Point not on contour\n";
     }
 }
 
 //проверка точки с квадратом
-void checkPointInsideSqure(Square* square, Dots* dots){
+void checkPointInsideShape(Square* square, Dots* dots){
     double leftLimit = square->leftUp.x - errRate;
     double rightLimit = square->leftUp.x + errRate + square->side;
     double topLimit = square->leftUp.y + errRate;
@@ -68,9 +68,9 @@ void checkPointInsideSqure(Square* square, Dots* dots){
         (dots->x > rightUp.x && dots-> y > rightUp.y && distLeftUp >= errRate && distLeftUp < 3 * errRate) ||
         (dots->x > leftBot.x && dots-> y < leftBot.y && distLeftUp >= errRate && distLeftUp < 3 * errRate) ||
         dots->x > leftLimit || dots->x < rightLimit || dots->y > botLimit || dots->y < topLimit){
-        std::cout << "Yes\n";
+        std::cout << "Point inside\n";
     } else {
-        std::cout << "No\n";
+        std::cout << "Point not inside\n";
     }
 }
 
@@ -115,8 +115,8 @@ void checkPointOnCont(Square* square, Dots* dots){
         (dots->x < rightLimit && dots->x < rightLimit - 2 * errRate) || 
         (dots->y > botLimit && dots->y > botLimit + 2 * errRate) || 
         (dots->y < topLimit && dots->y < topLimit - 2 * errRate)){
-        std::cout << "Yes\n";
+        std::cout << "Point on the contour\n";
     } else {
-        std::cout << "No\n";
+        std::cout << "Point not on contour\n";
     }
 }
