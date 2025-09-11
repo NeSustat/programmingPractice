@@ -23,11 +23,23 @@ void checkPointOnCont(Circle* circle, Dots* dots){
     double difPoint = sqrt((difX * difX) + (difY * difY));
     if (difPoint <= circle->radius + errRate &&
             difPoint >= circle->radius - errRate){
-        std::cout << "Point on the contour\n";
+        std::cout << "Point on contour\n";
     } else {
         std::cout << "Point not on contour\n";
     }
 }
+
+/*
+                 ／＞'''フ        
+                 |  _　_|         
+              ／` ミ＿xノ         
+             /　　     |        
+            /　 ヽ　　 ﾉ          
+            │　　|　|　|          
+       ／￣|　　 |　|　|          
+       (￣ヽ＿___ヽ_)__)          
+       ＼二)ДАЛЬШЕ БОГА НЕТ...           
+*/
 
 //проверка точки с квадратом
 void checkPointInsideShape(Square* square, Dots* dots){
@@ -107,6 +119,18 @@ void checkPointOnCont(Square* square, Dots* dots){
     distRightBot = sqrt(((rightBot.x - dots->x)*(rightBot.x - dots->x)) 
                     + ((rightBot.y - dots->y)*(rightBot.y - dots->y)));
 
+    /*
+                 ／＞'''フ        
+                 |  _　_|         
+              ／` ミ＿xノ         
+             /　　     |        
+            /　 ヽ　　 ﾉ          
+            │　　|　|　|          
+       ／￣|　　 |　|　|          
+       (￣ヽ＿___ヽ_)__)          
+       ＼二)Я ПРЕДУПРЕЖДАЛ...................................................................................          
+    */
+    
     if ((dots->x < leftUp.x && dots-> y > leftUp.y && distLeftUp >= errRate && distLeftUp < 3 * errRate) || 
         (dots->x < leftBot.x && dots-> y < leftBot.y && distLeftUp >= errRate && distLeftUp < 3 * errRate) ||
         (dots->x > rightUp.x && dots-> y > rightUp.y && distLeftUp >= errRate && distLeftUp < 3 * errRate) ||
@@ -115,7 +139,7 @@ void checkPointOnCont(Square* square, Dots* dots){
         (dots->x < rightLimit && dots->x < rightLimit - 2 * errRate) || 
         (dots->y > botLimit && dots->y > botLimit + 2 * errRate) || 
         (dots->y < topLimit && dots->y < topLimit - 2 * errRate)){
-        std::cout << "Point on the contour\n";
+        std::cout << "Point on contour\n";
     } else {
         std::cout << "Point not on contour\n";
     }
