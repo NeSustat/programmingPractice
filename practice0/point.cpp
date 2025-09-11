@@ -1,34 +1,16 @@
 #include <iostream>
 #include <cmath>
+#include "struct.h"
 
 const float pi = 3.14;
 
-struct Dots{
-    double x;
-    double y;
-};
-
-struct Circle{
-    Dots center;
-    double radius;
-    double len;
-    double square;
-};
-
-struct Square{
-    Dots leftUp;
-    double side;
-    double square;
-    double perimeter;
-};
-
-
 
 int main(){
-    int opt;
+    int opt = 0;
+    bool flag = true;
     std::cout << "circle = 1\nsquare = 2\n";
-    std::cin >> opt; 
-    while (opt != 1 || opt != 2){
+    while ((opt != 1 || opt != 2) && flag){
+        std::cin >> opt; 
         switch (opt) {
         case 1:
             Circle firstCircle;
@@ -43,7 +25,8 @@ int main(){
             
             //print 
             std::cout << "circle length: " << firstCircle.len << std::endl <<
-                "the area of the circle: " << firstCircle.square;
+                "the area of the circle: " << firstCircle.square << std::endl;
+            flag = false;
             break;
         case 2:
             Square firstSquare;
@@ -57,12 +40,15 @@ int main(){
 
             //print
             std::cout << "square area: " << firstSquare.square << std::endl <<
-                "the perimeter of the square: " << firstSquare.perimeter; 
+                "the perimeter of the square: " << firstSquare.perimeter << std::endl;
+            flag = false;
             break;
         default:
-            sdt::cout << "oops, something went wrong\nwrite X, Y and radius\n";
+            std::cout << "oops, something went wrong\ncircle = 1\nsquare = 2\n";
             std::cin >> opt;
             break;
         }
     }
+    std::cout << "check point = 1\ncheck shape = 2\n";
+    flag = true;
 }

@@ -1,13 +1,16 @@
 #include "checkPoint.h"
+#include "struct.h"
 #include <iostream>
+#include <cmath>
 
 const double errRate = 10^-5;
 
 //проверка точки с кругом
 void checkPointInsideCircle(Circle* circle, Dots* dots){
-    double difX = abc(circle.center.x - dots.x);
-    double difY = abc(circle.center.y - dots.y);
-    if (difX < circle.radius + errRate && dify < circle.radius + errRate){
+    double difX = abs(circle->center.x - dots->x);
+    double difY = abs(circle->center.y - dots->y);
+    double difPoint = sqrt((difX * difX) + (difY * difY));
+    if (difPoint < circle->radius + errRate){
         std::cout << "Yes\n";
     } else {
         std::cout << "No\n";
@@ -15,10 +18,11 @@ void checkPointInsideCircle(Circle* circle, Dots* dots){
 }
 
 void checkPointOnCont(Circle* circle, Dots* dots){
-    double difX = abc(circle.center.x - dots.x);
-    double difY = abc(circle.center.y - dots.y);
-    if (difX <= circle.radius + errRate && dify <= circle.radius + errRate &&
-        difX >= circle.radius - errRate && dify >= circle.radius - errRate){
+    double difX = abs(circle->center.x - dots->x);
+    double difY = abs(circle->center.y - dots->y);
+    double difPoint = sqrt((difX * difX) + (difY * difY));
+    if (difPoint <= circle->radius + errRate &&
+            difPoint >= circle->radius - errRate){
         std::cout << "Yes\n";
     } else {
         std::cout << "No\n";
@@ -26,19 +30,93 @@ void checkPointOnCont(Circle* circle, Dots* dots){
 }
 
 //проверка точки с квадратом
-void checkPointInsideSqure(Squre* squre, Dots* dots){
-    double rightLimit = circle.leftUp.x - errRate;
-    double leftLimit = circle.leftUp.x + errRate + circle.side;
-    double topLimit = circle.leftUp.y + errRate;
-    double botLimit = circle.leftUp.y - errRate - circle.side;
-    if (dots.x > leftLimit && dots.x < rightLimit && 
-        dots.y > botLimit && dots.y < topLimit){
+void checkPointInsideSqure(Square* square, Dots* dots){
+    double leftLimit = square->leftUp.x - errRate;
+    double rightLimit = square->leftUp.x + errRate + square->side;
+    double topLimit = square->leftUp.y + errRate;
+    double botLimit = square->leftUp.y - errRate - square->side;
+
+    Dots leftUp, rightUp, leftBot, rightBot;
+    double distLeftUp, distRightUp, distLeftBot, distRightBot;
+    //left top point
+    leftUp.x = square->leftUp.x;
+    leftUp.y = square->leftUp.y;
+    
+    distLeftUp = sqrt(((leftUp.x - dots->x)*(leftUp.x - dots->x)) 
+                    + ((leftUp.y - dots->y)*(leftUp.y - dots->y)));
+    //right top point
+    rightUp.x = square->leftUp.x + square->side;
+    rightUp.y = square->leftUp.y;
+    
+    distRightUp = sqrt(((rightUp.x - dots->x)*(rightUp.x - dots->x)) 
+                    + ((rightUp.y - dots->y)*(rightUp.y - dots->y)));
+    //left bot point
+    leftBot.x = square->leftUp.x;
+    leftBot.y = square->leftUp.y - square->side;
+    
+    distLeftBot = sqrt(((leftBot.x - dots->x)*(leftBot.x - dots->x)) 
+                    + ((leftBot.y - dots->y)*(leftBot.y - dots->y)));
+    //right bot point
+    rightBot.x = square->leftUp.x + square->side;
+    rightBot.y = square->leftUp.y - square->side;
+
+    distRightBot = sqrt(((rightBot.x - dots->x)*(rightBot.x - dots->x)) 
+                    + ((rightBot.y - dots->y)*(rightBot.y - dots->y)));
+
+    if ((dots->x < leftUp.x && dots-> y > leftUp.y && distLeftUp >= errRate && distLeftUp < 3 * errRate) || 
+        (dots->x < leftBot.x && dots-> y < leftBot.y && distLeftUp >= errRate && distLeftUp < 3 * errRate) ||
+        (dots->x > rightUp.x && dots-> y > rightUp.y && distLeftUp >= errRate && distLeftUp < 3 * errRate) ||
+        (dots->x > leftBot.x && dots-> y < leftBot.y && distLeftUp >= errRate && distLeftUp < 3 * errRate) ||
+        dots->x > leftLimit || dots->x < rightLimit || dots->y > botLimit || dots->y < topLimit){
         std::cout << "Yes\n";
     } else {
         std::cout << "No\n";
     }
 }
 
-void checkPointOnSqure(Squre* squre, Dots* dots){
+void checkPointOnCont(Square* square, Dots* dots){
+    double leftLimit = square->leftUp.x - errRate;
+    double rightLimit = square->leftUp.x + errRate + square->side;
+    double topLimit = square->leftUp.y + errRate;
+    double botLimit = square->leftUp.y - errRate - square->side;
 
+    Dots leftUp, rightUp, leftBot, rightBot;
+    double distLeftUp, distRightUp, distLeftBot, distRightBot;
+    //left top point
+    leftUp.x = square->leftUp.x;
+    leftUp.y = square->leftUp.y;
+    
+    distLeftUp = sqrt(((leftUp.x - dots->x)*(leftUp.x - dots->x)) 
+                    + ((leftUp.y - dots->y)*(leftUp.y - dots->y)));
+    //right top point
+    rightUp.x = square->leftUp.x + square->side;
+    rightUp.y = square->leftUp.y;
+    
+    distRightUp = sqrt(((rightUp.x - dots->x)*(rightUp.x - dots->x)) 
+                    + ((rightUp.y - dots->y)*(rightUp.y - dots->y)));
+    //left bot point
+    leftBot.x = square->leftUp.x;
+    leftBot.y = square->leftUp.y - square->side;
+    
+    distLeftBot = sqrt(((leftBot.x - dots->x)*(leftBot.x - dots->x)) 
+                    + ((leftBot.y - dots->y)*(leftBot.y - dots->y)));
+    //right bot point
+    rightBot.x = square->leftUp.x + square->side;
+    rightBot.y = square->leftUp.y - square->side;
+
+    distRightBot = sqrt(((rightBot.x - dots->x)*(rightBot.x - dots->x)) 
+                    + ((rightBot.y - dots->y)*(rightBot.y - dots->y)));
+
+    if ((dots->x < leftUp.x && dots-> y > leftUp.y && distLeftUp >= errRate && distLeftUp < 3 * errRate) || 
+        (dots->x < leftBot.x && dots-> y < leftBot.y && distLeftUp >= errRate && distLeftUp < 3 * errRate) ||
+        (dots->x > rightUp.x && dots-> y > rightUp.y && distLeftUp >= errRate && distLeftUp < 3 * errRate) ||
+        (dots->x > leftBot.x && dots-> y < leftBot.y && distLeftUp >= errRate && distLeftUp < 3 * errRate) ||
+        (dots->x > leftLimit && dots->x < leftLimit + 2 * errRate) || 
+        (dots->x < rightLimit && dots->x < rightLimit - 2 * errRate) || 
+        (dots->y > botLimit && dots->y > botLimit + 2 * errRate) || 
+        (dots->y < topLimit && dots->y < topLimit - 2 * errRate)){
+        std::cout << "Yes\n";
+    } else {
+        std::cout << "No\n";
+    }
 }
