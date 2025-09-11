@@ -93,9 +93,11 @@ int main(){
             break;
         case 2:
             
+            flag = false;
             break;
         case 3:
             
+            flag = false;
             break;
         default:
             break;
