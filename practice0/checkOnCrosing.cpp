@@ -19,11 +19,11 @@ void checkOncrosing(Circle firstCircle, Circle secondCircle){
 
 //расширить границы квадрата на радиус круга и погрешность и проверять находится ли центр окружность внутки это квадрата
 void checkOncrosing(Circle circle, Square square){
-    double leftLimit, rightLimit, topLimit, botLiimit;
+    double leftLimit, rightLimit, topLimit, botLimit;
     leftLimit = square.leftUp.x - circle.radius - errRate;
     rightLimit = square.leftUp.x + square.side + circle.radius + errRate;
     topLimit = square.leftUp.y + circle.radius + errRate;
-    dotLimit = square.leftUp.y - square.side - circle.radius - errRate;
+    botLimit = square.leftUp.y - square.side - circle.radius - errRate;
 
     Dots leftUp, rightUp, leftBot, rightBot;
     leftUp.x = square.leftUp.x;
@@ -39,9 +39,13 @@ void checkOncrosing(Circle circle, Square square){
     rightBot.y = square.leftUp.y - square.side;
 
     if (((circle.center.x > leftUp.x && circle.center.x < rightUp.x && 
-        circle.center.y < topLimit && circle.center.y > botLimit) ||
+        circle.center.y < topLimit && circle.center.y > square.leftUp.y - circle.radius - errRate) ||
         (circle.center.y < leftUp.y && circle.center.y > leftBot.y && 
-        circle.center.x > leftLimit && circle.center.x < rightLimit)) ||
+        circle.center.x > leftLimit && circle.center.x < square.leftUp.x + circle.radius + errRate) || 
+        (circle.center.x > leftUp.x && circle.center.x < rightUp.x && 
+        circle.center.y > botLimit && circle.center.y < square.leftUp.y + circle.radius - square.side + errRate) ||
+        (circle.center.y < leftUp.y && circle.center.y > leftBot.y && 
+        circle.center.x < rightLimit && circle.center.x > square.leftUp.x + square.side - circle.radius - errRate)) ||
         (sqrt(pow(circle.center.x - leftUp.x, 2) + 
         pow(circle.center.y - leftUp.Y, 2)) <= Circle.radius + errRate) ||
         (sqrt(pow(circle.center.x - rightUp.x, 2) + 
