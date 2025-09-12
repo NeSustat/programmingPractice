@@ -6,43 +6,31 @@
 const double errRate = 1e-5;
 
 //проверка точки с кругом
-void checkPointInsideShape(Circle* circle, Dots* dots){
+bool checkPointInsideShape(Circle* circle, Dots* dots){
     double difX = abs(circle->center.x - dots->x);
     double difY = abs(circle->center.y - dots->y);
     double difPoint = sqrt((difX * difX) + (difY * difY));
-    if (difPoint < circle->radius - errRate){
-        std::cout << "\nPoint inside\n";
-    } else {
-        std::cout << "\nPoint not inside\n";
-    }
+    return difPoint < circle->radius - errRate
 }
 
-void checkPointOnCont(Circle* circle, Dots* dots){
+bool checkPointOnCont(Circle* circle, Dots* dots){
     double difX = abs(circle->center.x - dots->x);
     double difY = abs(circle->center.y - dots->y);
     double difPoint = sqrt((difX * difX) + (difY * difY));
-    if (difPoint <= circle->radius + errRate &&
-            difPoint >= circle->radius - errRate){
-        std::cout << "Point on contour\n";
-    } else {
-        std::cout << "Point not on contour\n";
-    }
+    return difPoint <= circle->radius + errRate &&
+            difPoint >= circle->radius - errRate
 }
 
 
 
 //проверка точки с квадратом
-void checkPointInsideShape(Square* square, Dots* dots){
+bool checkPointInsideShape(Square* square, Dots* dots){
     double leftLimit = square->leftUp.x + errRate;
     double rightLimit = square->leftUp.x - errRate + square->side;
     double topLimit = square->leftUp.y - errRate;
     double botLimit = square->leftUp.y + errRate - square->side;
 
-    if (dots->x > leftLimit && dots->x < rightLimit && dots->y > botLimit && dots->y < topLimit){
-        std::cout << "\nPoint inside\n";
-    } else {
-        std::cout << "\nPoint not inside\n";
-    }
+    return dots->x > leftLimit && dots->x < rightLimit && dots->y > botLimit && dots->y < topLimit
 }
 
 /*
@@ -57,7 +45,7 @@ void checkPointInsideShape(Square* square, Dots* dots){
        ＼二)ДАЛЬШЕ БОГА НЕТ...           
 */
 
-void checkPointOnCont(Square* square, Dots* dots){
+bool checkPointOnCont(Square* square, Dots* dots){
     double leftLimit = square->leftUp.x - errRate;
     double rightLimit = square->leftUp.x + errRate + square->side;
     double topLimit = square->leftUp.y + errRate;
@@ -90,16 +78,12 @@ void checkPointOnCont(Square* square, Dots* dots){
     distRightBot = sqrt(((rightBot.x - dots->x)*(rightBot.x - dots->x)) 
                     + ((rightBot.y - dots->y)*(rightBot.y - dots->y)));
 
-    if ((distLeftUp <= errRate) || 
+    return (distLeftUp <= errRate) || 
         (distLeftBot <= errRate) ||
         (distRightUp <= errRate) ||
         (distRightBot <= errRate) ||
         (dots->y > leftBot.y && dots->y < leftUp.y && dots->x > leftLimit && dots->x < leftLimit + 2 * errRate) || 
         (dots->y > rightBot.y && dots->y < rightUp.y && dots->x < rightLimit && dots->x > rightLimit - 2 * errRate) || 
         (dots->x < rightBot.x && dots->x > leftBot.x && dots->y > botLimit && dots->y < botLimit - 2 * errRate) || 
-        (dots->x < rightUp.x && dots->x > leftUp.x && dots->y < topLimit && dots->y > topLimit + 2 * errRate)){
-        std::cout << "Point on contour\n";
-    } else {
-        std::cout << "Point not on contour\n";
-    }
+        (dots->x < rightUp.x && dots->x > leftUp.x && dots->y < topLimit && dots->y > topLimit + 2 * errRate)
 }

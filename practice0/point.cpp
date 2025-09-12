@@ -81,11 +81,27 @@ int main(){
         switch (optD) {
         case 1:
             if (opt == 1){
-                checkPointInsideShape(&firstCircle, &dot);
-                checkPointOnCont(&firstCircle, &dot);
+                if (checkPointInsideShape(&firstCircle, &dot)) {
+                    std::cout << "\nPoint inside\n";
+                } else {
+                    std::cout << "\nPoint not inside\n";
+                }
+                if (checkPointOnCont(&firstCircle, &dot)){
+                    std::cout << "Point on contour\n";
+                } else {
+                    std::cout << "Point not on contour\n";
+                }
             } else if (opt == 2){
-                checkPointInsideShape(&firstSquare, &dot);
-                checkPointOnCont(&firstSquare, &dot);
+                if (checkPointInsideShape(&firstSquare, &dot)){
+                    std::cout << "\nPoint inside\n";
+                } else {
+                    std::cout << "\nPoint not inside\n";
+                }
+                if (checkPointOnCont(&firstSquare, &dot)){
+                    std::cout << "Point on contour\n";
+                } else {
+                    std::cout << "Point not on contour\n";
+                }
             }
             flag = false;
             break;

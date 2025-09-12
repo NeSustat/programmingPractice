@@ -54,13 +54,14 @@ void checkOncrosing(Circle circle, Square square){
         pow(circle.center.y - leftBot.Y, 2)) <= Circle.radius + errRate) || 
         (sqrt(pow(circle.center.x - rightBot.x, 2) + 
         pow(circle.center.y - rightBot.Y, 2)) <= Circle.radius + errRate)){
+       
             std::cout << "\nCircle crosing square";
-        } else {
-            std::cout << "\nCircle not crosing square";
-        }
+    } else {
+        std::cout << "\nCircle not crosing square";
+    }
 }
 
 //проверка двух квадратов
 void checkOncrosing(Square firstSquare, Square secondSquare){
-
+    
 }
