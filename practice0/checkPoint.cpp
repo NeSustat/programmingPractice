@@ -33,18 +33,6 @@ bool checkPointInsideShape(Square* square, Dots* dots){
     return dots->x > leftLimit && dots->x < rightLimit && dots->y > botLimit && dots->y < topLimit
 }
 
-/*
-                 ／＞'''フ        
-                 |  _　_|         
-              ／` ミ＿xノ         
-             /　　     |        
-            /　 ヽ　　 ﾉ          
-            │　　|　|　|          
-       ／￣|　　 |　|　|          
-       (￣ヽ＿___ヽ_)__)          
-       ＼二)ДАЛЬШЕ БОГА НЕТ...           
-*/
-
 bool checkPointOnCont(Square* square, Dots* dots){
     double leftLimit = square->leftUp.x - errRate;
     double rightLimit = square->leftUp.x + errRate + square->side;
