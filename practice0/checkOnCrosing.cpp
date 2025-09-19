@@ -6,13 +6,15 @@
 const double errRate = 1e-5;
 
 //проверка двух кругов
-void checkOnCrosing(Circle firstCircle, Circle secondCircle){
+bool checkOnCrosing(Circle firstCircle, Circle secondCircle){
     double difCenter = sqrt(pow(firstCircle.center.x - secondCircle.center.x, 2) + 
                             pow(firstCircle.center.y - secondCircle.center.y, 2));
     double maxDif = firstCircle.radius + secondCircle.radius + errRate;
     if (difCenter >= maxDif){
+        return true;
         std::cout << "\nCircles intersect";
     } else {
+        return false;
         std::cout << "\nCircles not intersect";
     }
 }
@@ -76,35 +78,35 @@ void checkOnCrosing(Circle circle, Square square){
 }
 
 //проверка двух квадратов
-void checkOnCrosing(Square firstSquare, Square secondSquare){
-    Square smal, big;
+bool checkOnCrosing(Square firstSquare, Square secondSquare){
+    Square small, big;
     if (firstSquare.side > secondSquare.side){
-        smal.side = secondSquare.side;
-        smal.x = secondSquare.x;
-        smal.y = secondSquare.y;
+        small.side = secondSquare.side;
+        small.leftUp.x = secondSquare.leftUp.x;
+        small.leftUp.y = secondSquare.leftUp.y;
         bid.side = firstSquare.side;
-        bid.x = firstSquare.x;
-        big.y = firstSquare.y;
+        bid.leftUp.x = firstSquare.leftUp.x;
+        big.leftUp.y = firstSquare.leftUp.y;
     } else {
         bid.side = secondSquare.side;
-        bid.x = secondSquare.x;
-        bid.y = secondSquare.y;
-        smal.side = firstSquare.side;
-        smal.x = firstSquare.x;
-        smal.y = firstSquare.y;        
+        bid.leftUp.x = secondSquare.leftUp.x;
+        bid.leftUp.y = secondSquare.leftUp.y;
+        small.side = firstSquare.side;
+        small.leftUp.x = firstSquare.leftUp.x;
+        small.leftUp.y = firstSquare.leftUp.y;        
     }
     Dots points[4];
-    points[0].x = smal.leftUp.x;
-    points[0].y = smal.leftUp.y;
+    points[0].x = small.leftUp.x;
+    points[0].y = small.leftUp.y;
 
-    points[1].x = smal.leftUp.x + square.side;
-    points[1].y = smal.leftUp.y;
+    points[1].x = small.leftUp.x + square.side;
+    points[1].y = small.leftUp.y;
 
-    points[2].x = smal.leftUp.x;
-    points[2].y = smal.leftUp.y - square.side;
+    points[2].x = small.leftUp.x;
+    points[2].y = small.leftUp.y - square.side;
 
-    points[3].x = smal.leftUp.x + square.side;
-    points[3].y = smal.leftUp.y - square.side;
+    points[3].x = small.leftUp.x + square.side;
+    points[3].y = small.leftUp.y - square.side;
 
     int count = 0;
     for (int i = 0, i < 4, i++){
@@ -113,8 +115,10 @@ void checkOnCrosing(Square firstSquare, Square secondSquare){
         }
     }
     if (count > 0 && count < 4){
+        return true;
         std::cout << "Square crosing";
     } else {
+        return false;
         std::cout << "Square not crosing";
     }
 }

@@ -2,7 +2,7 @@
 #include "struct.h"
 
 //проверка двух кругов
-void checkOnCrosing(Circle firstCircle, Circle secondCircle)
+bool checkOnCrosing(Circle firstCircle, Circle secondCircle)
 
 //проверка круга и квадрата
 void checkOnCrosing(Circle circle, Square square)
