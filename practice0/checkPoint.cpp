@@ -5,34 +5,36 @@
 
 const double errRate = 1e-5;
 
-//проверка точки с кругом
-bool checkPointInsideShape(Circle* circle, Dots* dots){
-    double difX = abs(circle->center.x - dots->x);
-    double difY = abs(circle->center.y - dots->y);
-    double difPoint = sqrt((difX * difX) + (difY * difY));
-    return difPoint < circle->radius - errRate
+double distance(Dots a, Dots b){
+    return sqrt(((a.x - b.x)*(a.x - b.x)) + ((a.x - b.x)*(a.x - b.x)));
 }
 
-bool checkPointOnCont(Circle* circle, Dots* dots){
-    double difX = abs(circle->center.x - dots->x);
-    double difY = abs(circle->center.y - dots->y);
-    double difPoint = sqrt((difX * difX) + (difY * difY));
+/*проверка точки с кругом*/
+//проверка есть ли точка внутри
+bool checkPointInsideShape(Circle *circle, Dots *dots){
+    return distance(circle->center, *dots) < circle->radius - errRate;
+}
+
+//есть ли точка на границе
+bool checkPointOnCont(Circle *circle, Dots *dots){
+    double difPoint = distance(circle->center, *dots);
     return difPoint <= circle->radius + errRate &&
-            difPoint >= circle->radius - errRate
+            difPoint >= circle->radius - errRate;
 }
 
 
-
-//проверка точки с квадратом
+/*проверка точки с квадратом*/
+//проверка есть ли точка внутри
 bool checkPointInsideShape(Square* square, Dots* dots){
     double leftLimit = square->leftUp.x + errRate;
     double rightLimit = square->leftUp.x - errRate + square->side;
     double topLimit = square->leftUp.y - errRate;
     double botLimit = square->leftUp.y + errRate - square->side;
 
-    return dots->x > leftLimit && dots->x < rightLimit && dots->y > botLimit && dots->y < topLimit
+    return dots->x > leftLimit && dots->x < rightLimit && dots->y > botLimit && dots->y < topLimit;
 }
 
+//есть ли точка на границе
 bool checkPointOnCont(Square* square, Dots* dots){
     double leftLimit = square->leftUp.x - errRate;
     double rightLimit = square->leftUp.x + errRate + square->side;
@@ -73,5 +75,5 @@ bool checkPointOnCont(Square* square, Dots* dots){
         (dots->y > leftBot.y && dots->y < leftUp.y && dots->x > leftLimit && dots->x < leftLimit + 2 * errRate) || 
         (dots->y > rightBot.y && dots->y < rightUp.y && dots->x < rightLimit && dots->x > rightLimit - 2 * errRate) || 
         (dots->x < rightBot.x && dots->x > leftBot.x && dots->y > botLimit && dots->y < botLimit - 2 * errRate) || 
-        (dots->x < rightUp.x && dots->x > leftUp.x && dots->y < topLimit && dots->y > topLimit + 2 * errRate)
+        (dots->x < rightUp.x && dots->x > leftUp.x && dots->y < topLimit && dots->y > topLimit + 2 * errRate);
 }

@@ -2,10 +2,10 @@
 #include "struct.h"
 
 //проверка двух кругов
-bool checkOnCrosing(Circle firstCircle, Circle secondCircle)
+bool checkOnCrosing(Circle firstCircle, Circle secondCircle);
 
 //проверка круга и квадрата
-void checkOnCrosing(Circle circle, Square square)
+bool checkOnCrosing(Circle circle, Square square);
 
 //проверка двух квадратов
-void checkOnCrosing(Square firstSquare, Square secondSquare)
+bool checkOnCrosing(Square firstSquare, Square secondSquare);

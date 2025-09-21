@@ -1,6 +1,7 @@
 #include "shapeInShape.h"
 #include "struct.h"
 #include "checkOnCrosing.h"
+#include "checkPoint.h"
 #include <iostream>
 #include <cmath>
 
@@ -22,18 +23,17 @@ bool shapeInShape(Circle firstCircle, Circle secondCircle){
         small.radius = firstCircle.radius;
     }
     double areaLoc = big.radius - small.radius;
-    double difCenter = sqrt(pow(big.center.x - small.center.x, 2) + 
-                            pow(big.center.y - small.center.y, 2));
+    double difCenter = distance(firstCircle.center, secondCircle.center);
     if (difCenter < areaLoc && !checkOnCrosing(big, small)){
         return true;
-        std::count << "Circle in circle\n";
+        // std::cout << "Circle in circle\n";
     } else {
         return false;
-        std::cout << "Circle is not in circle\n";
+        // std::cout << "Circle is not in circle\n";
     }
 }
 
-void shapeInShape(Circle circle, Square square){
+bool shapeInShape(Circle circle, Square square){
     Circle big, small;
     small.radius = square.side / 2.0;
     small.center.x = square.leftUp.x + small.radius;
@@ -52,19 +52,19 @@ void shapeInShape(Circle circle, Square square){
     }
 }
 
-void shapeInShape(Square firstSquare, Square secondSquare){
+bool shapeInShape(Square firstSquare, Square secondSquare){
     Square small, big;
     if (firstSquare.side > secondSquare.side){
         small.side = secondSquare.side;
         small.leftUp.x = secondSquare.leftUp.x;
         small.leftUp.y = secondSquare.leftUp.y;
-        bid.side = firstSquare.side;
-        bid.leftUp.x = firstSquare.leftUp.x;
+        big.side = firstSquare.side;
+        big.leftUp.x = firstSquare.leftUp.x;
         big.leftUp.y = firstSquare.leftUp.y;
     } else {
-        bid.side = secondSquare.side;
-        bid.leftUp.x = secondSquare.leftUp.x;
-        bid.leftUp.y = secondSquare.leftUp.y;
+        big.side = secondSquare.side;
+        big.leftUp.x = secondSquare.leftUp.x;
+        big.leftUp.y = secondSquare.leftUp.y;
         small.side = firstSquare.side;
         small.leftUp.x = firstSquare.leftUp.x;
         small.leftUp.y = firstSquare.leftUp.y;        
@@ -77,7 +77,7 @@ void shapeInShape(Square firstSquare, Square secondSquare){
     bigRightBot.x = big.leftUp.x + big.side;
     bigRightBot.y = big.leftUp.y - big.side;
 
-    if (!checkOnCrosing(bid, small) && small.leftUp.x > big.leftUp.x && 
+    if (!checkOnCrosing(big, small) && small.leftUp.x > big.leftUp.x && 
         small.leftUp.y < big.leftUp.y && smallRightBot.x < bigRightBot.x &&
         smallRightBot.y > bigRightBot.y){
             std::cout << "Square is in square";
