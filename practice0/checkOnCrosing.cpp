@@ -1,6 +1,7 @@
 #include "struct.h"
-#include "checkOncrosing.h"
+#include "checkOnCrosing.h"
 #include "checkPoint.h"
+#include "shapeInShape.h"
 #include <iostream>
 #include <cmath>
 
@@ -10,12 +11,11 @@ const double errRate = 1e-5;
 bool checkOnCrosing(Circle firstCircle, Circle secondCircle){
     double difCenter = distance(firstCircle.center, secondCircle.center);
     double maxDif = firstCircle.radius + secondCircle.radius + errRate;
-    if (difCenter >= maxDif){
+    double minDif = abs(firstCircle.radius - secondCircle.radius) + errRate;
+    if (difCenter <= maxDif && difCenter >= minDif){
         return true;
-        // std::cout << "\nCircles intersect";
     } else {
         return false;
-        // std::cout << "\nCircles not intersect";
     }
 }
 
@@ -54,7 +54,7 @@ bool checkOnCrosing(Circle circle, Square square){
     rightBot.x = square.leftUp.x + square.side;
     rightBot.y = square.leftUp.y - square.side;
 
-    if (((circle.center.x > leftUp.x && circle.center.x < rightUp.x && //ограничения для X (правая и левая граница)
+    if ((((circle.center.x > leftUp.x && circle.center.x < rightUp.x && //ограничения для X (правая и левая граница)
         circle.center.y < topLimit && circle.center.y > square.leftUp.y - circle.radius - errRate) || //ограничения для Y (верх низ) и так еще 3 раза
         (circle.center.y < leftUp.y && circle.center.y > leftBot.y && 
         circle.center.x > leftLimit && circle.center.x < square.leftUp.x + circle.radius + errRate) || 
@@ -62,15 +62,14 @@ bool checkOnCrosing(Circle circle, Square square){
         circle.center.y > botLimit && circle.center.y < square.leftUp.y + circle.radius - square.side + errRate) ||
         (circle.center.y < leftUp.y && circle.center.y > leftBot.y && 
         circle.center.x < rightLimit && circle.center.x > square.leftUp.x + square.side - circle.radius - errRate)) ||
-        (distance(circle.center, leftUp) <= circle.radius + errRate) || //в углах погрешность считается как радиус < расстояние между углом и центром окружности
+        ((distance(circle.center, leftUp) <= circle.radius + errRate) || //в углах погрешность считается как радиус < расстояние между углом и центром окружности
         (distance(circle.center, rightUp) <= circle.radius + errRate) || 
         (distance(circle.center, leftBot) <= circle.radius + errRate) ||
-        (distance(circle.center, rightBot) <= circle.radius + errRate)){
+        (distance(circle.center, rightBot) <= circle.radius + errRate))) &&
+        !shapeInShapeInt(circle, square)){
         return true;
-        // std::cout << "\nCircle crosing square";
     } else {
         return false;
-        // std::cout << "\nCircle not crosing square";
     }
 }
 
@@ -113,9 +112,7 @@ bool checkOnCrosing(Square firstSquare, Square secondSquare){
     }
     if (count > 0 && count < 4){
         return true;
-        // std::cout << "Square crosing";
     } else {
         return false;
-        // std::cout << "Square not crosing";
     }
 }

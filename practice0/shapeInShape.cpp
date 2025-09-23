@@ -5,50 +5,57 @@
 #include <iostream>
 #include <cmath>
 
-bool shapeInShape(Circle firstCircle, Circle secondCircle){
+bool shapeInShape(Circle firstCircle, Circle secondCircle, bool a){
     Circle big, small;
-    if (firstCircle.radius > secondCircle.radius){
-        big.center.x = firstCircle.center.x;
-        big.center.y = firstCircle.center.y;
-        big.radius = firstCircle.radius;
-        small.center.x = secondCircle.center.x;
-        small.center.y = secondCircle.center.y;
-        small.radius = secondCircle.radius;
+    if (a){
+        if (firstCircle.radius > secondCircle.radius){
+            big.center.x = firstCircle.center.x;
+            big.center.y = firstCircle.center.y;
+            big.radius = firstCircle.radius;
+            small.center.x = secondCircle.center.x;
+            small.center.y = secondCircle.center.y;
+            small.radius = secondCircle.radius;
+        } else {
+            big.center.x = secondCircle.center.x;
+            big.center.y = secondCircle.center.y;
+            big.radius = secondCircle.radius;
+            small.center.x = firstCircle.center.x;
+            small.center.y = firstCircle.center.y;
+            small.radius = firstCircle.radius;
+        }
     } else {
-        big.center.x = secondCircle.center.x;
-        big.center.y = secondCircle.center.y;
-        big.radius = secondCircle.radius;
-        small.center.x = firstCircle.center.x;
-        small.center.y = firstCircle.center.y;
-        small.radius = firstCircle.radius;
+            big.center.x = firstCircle.center.x;
+            big.center.y = firstCircle.center.y;
+            big.radius = firstCircle.radius;
+            small.center.x = secondCircle.center.x;
+            small.center.y = secondCircle.center.y;
+            small.radius = secondCircle.radius;       
     }
     double areaLoc = big.radius - small.radius;
     double difCenter = distance(firstCircle.center, secondCircle.center);
     if (difCenter < areaLoc && !checkOnCrosing(big, small)){
         return true;
-        // std::cout << "Circle in circle\n";
     } else {
         return false;
-        // std::cout << "Circle is not in circle\n";
     }
 }
 
-bool shapeInShape(Circle circle, Square square){
+int shapeInShapeInt(Circle circle, Square square){
     Circle big, small;
     small.radius = square.side / 2.0;
     small.center.x = square.leftUp.x + small.radius;
-    small.center.x = square.leftUp.y - small.radius;
+    small.center.y = square.leftUp.y - small.radius;
 
     big.radius = (square.side * sqrt(2)) / 2.0;
     big.center.x = square.leftUp.x + small.radius;
-    big.center.x = square.leftUp.y - small.radius;
+    big.center.y = square.leftUp.y - small.radius;
 
-    if (shapeInShape(circle, big)){
-        std::cout << "Circle is in square\n";
-    } else if (shapeInShape(circle, small)){
-        std::cout << "Square is in circle\n";
+    if (shapeInShape(big, circle, 0)){
+        return 1;
+    } else if (shapeInShape(circle, small, 0)){
+        return 2;
     } else {
-        std::cout << "Shape is not in shape";
+        return 0;
     }
 }
 
@@ -80,8 +87,8 @@ bool shapeInShape(Square firstSquare, Square secondSquare){
     if (!checkOnCrosing(big, small) && small.leftUp.x > big.leftUp.x && 
         small.leftUp.y < big.leftUp.y && smallRightBot.x < bigRightBot.x &&
         smallRightBot.y > bigRightBot.y){
-            std::cout << "Square is in square";
+            return true;
         } else {
-            std::cout << "Square is not in square";
+            return false;
         }
 }

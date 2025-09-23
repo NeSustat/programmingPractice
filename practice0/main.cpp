@@ -2,9 +2,10 @@
 #include <cmath>
 #include "struct.h"
 #include "checkPoint.h"
+#include "checkOnCrosing.h"
+#include "shapeInShape.h"
 
 const float pi = 3.14;
-
 
 int main(){
     int opt = 0;
@@ -106,11 +107,71 @@ int main(){
             flag = false;
             break;
         case 2:
-            
+            if (opt == 1){
+                if (checkOnCrosing(firstCircle, secondCircle)){
+                    std::cout << "Circles intersect\n";
+                } else {
+                    std::cout << "Circles not intersect\n";
+                }
+                if (shapeInShape(firstCircle, secondCircle, 1)){      
+                    std::cout << "Circle in circle\n";
+                } else {
+                    std::cout << "Circle is not in circle\n";
+                }
+            }else if (opt == 2){
+                switch (shapeInShapeInt(secondCircle, firstSquare)){
+                case 1:
+                    std::cout << "Circle is in square";
+                    break;
+                case 2:
+                    std::cout << "Square is in circle";
+                    break;
+                case 0:
+                    std::cout << "Shape is not in shape";
+                    break;
+                default:
+                    break;
+                }
+                if (checkOnCrosing(secondCircle, firstSquare)){
+                    std::cout << "\nCircle crosing square\n";
+                } else {
+                    std::cout << "\nCircle not crosing square\n";
+                }              
+            }
             flag = false;
             break;
         case 3:
-            
+            if (opt == 1){
+                switch (shapeInShapeInt(firstCircle, secondSquare)){
+                case 1:
+                    std::cout << "Circle is in square";
+                    break;
+                case 2:
+                    std::cout << "Square is in circle";
+                    break;
+                case 0:
+                    std::cout << "Shape is not in shape";
+                    break;
+                default:
+                    break;
+                }
+                if (checkOnCrosing(firstCircle, secondSquare)){
+                    std::cout << "\nCircle crosing\n";
+                } else {
+                    std::cout << "\nCircle not crosing\n";
+                }  
+            }else if (opt == 2){
+                if (checkOnCrosing(secondSquare, firstSquare)){
+                    std::cout << "Square crosing\n";
+                } else {
+                    std::cout << "Square not crosing\n";
+                }
+                if (shapeInShape(secondSquare, firstSquare)){ 
+                    std::cout << "Square is in square\n";
+                } else {
+                    std::cout << "Square is not in square\n";
+                }              
+            }            
             flag = false;
             break;
         default:

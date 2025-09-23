@@ -6,7 +6,7 @@
 const double errRate = 1e-5;
 
 double distance(Dots a, Dots b){
-    return sqrt(((a.x - b.x)*(a.x - b.x)) + ((a.x - b.x)*(a.x - b.x)));
+    return sqrt(((a.x - b.x)*(a.x - b.x)) + ((a.y - b.y)*(a.y - b.y)));
 }
 
 /*проверка точки с кругом*/
