@@ -9,11 +9,12 @@ class Arr {
 public:
     Arr(int n);
     Arr(const Arr &curData);
+    Arr& operator=(const Arr& other);
     ~Arr();
     void set();
     void pushBack();
     void getNum(int num);
     void getArr();
     void sumArr(Arr &a);
-    void minusArr(Arr &a);
+    void diffArr(Arr &a);
 };
