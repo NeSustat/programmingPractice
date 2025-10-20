@@ -4,7 +4,8 @@
 #include <fstream>
 #include <string>
 
-int countImage = 1;
+int countImageNoise = 1;
+int countImageRepair = 1;
 
 class pgmImage {
 private:
@@ -27,16 +28,21 @@ public:
     ~pgmImage(){
         delete[] arr;
     }
-    void save(){
+    void save(std::string a){
         std::ofstream file;
-        file.open("PicturesWithNoise/Image" + std::to_string(countImage) + ".pgm");
+        if (a == "noise"){
+            file.open("Pictures/NoiseImage" + std::to_string(countImageNoise) + ".pgm");
+            countImageNoise++;
+        } else if (a == "repair"){
+            file.open("Pictures/RepairImage" + std::to_string(countImageRepair) + ".pgm");
+            countImageRepair++;
+        }
         file << "P2\n" << width << " " << height << std::endl;
         file << maxVal << std::endl;
         for (int i = 0; i < width * height; i++){
             file << arr[i] << std::endl;
         }
         file.close();
-        countImage++;
     }
     void gaussianNoise(double sigma){
         std::random_device rd;
@@ -48,6 +54,7 @@ public:
             int newPixel = arr[i] + (int)noiseValue;
             arr[i] = std::max(0, std::min(maxVal, newPixel));
         }
+        save("noise");
     }
     int getMedian(int *arr, int len){
         for (int i = 0; i < len - 1; i++){
@@ -70,13 +77,12 @@ public:
             }
             arr[i + (step/2)] = getMedian(curArr, step);
         }
+        save("repair");
     }
 };
 
 int main(){
     pgmImage firstPic("test.pgm");
     firstPic.gaussianNoise(20);
-    firstPic.save();
     firstPic.removeNoise(13);
-    firstPic.save();
 }
