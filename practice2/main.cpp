@@ -3,6 +3,7 @@
 #include <random>
 #include <fstream>
 #include <string>
+#include <algorithm>
 
 int countImageNoise = 1;
 int countImageRepair = 1;
@@ -57,32 +58,68 @@ public:
         save("noise");
     }
     int getMedian(int *arr, int len){
-        for (int i = 0; i < len - 1; i++){
-            for (int j = 0; j < len - i - 1; j++){
-                if (arr[j] > arr[j + 1]){
-                    int temp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = temp;
-                }
-            }
-        }
+        std::sort(arr, arr + len); 
         return arr[len / 2];
     }
-
     void removeNoise(int step){
-        int curArr[7] = {0};
-        for (int i = 0; i < width * height - step; i++){
-            for (int j = 0; j < step; j++){
-                curArr[j] = arr[i + j];
-            }
-            arr[i + (step/2)] = getMedian(curArr, step);
+        int* tempArr = new int[width * height];
+        for (int i = 0; i < width * height; i++){
+            tempArr[i] = arr[i];
         }
+        int halfStep = step / 2;
+        for (int row = halfStep; row < height - halfStep; row++){
+            for (int col = halfStep; col < width - halfStep; col++){
+                int curArr[step * step];
+                int index = 0;
+                for (int dy = -halfStep; dy <= halfStep; dy++){
+                    for (int dx = -halfStep; dx <= halfStep; dx++){
+                        curArr[index++] = arr[(row + dy) * width + (col + dx)];
+                    }
+                }
+                tempArr[row * width + col] = getMedian(curArr, step * step);
+            }
+        }
+        for (int i = 0; i < width * height; i++){
+            arr[i] = tempArr[i];
+        }
+        delete[] tempArr;
         save("repair");
     }
 };
 
 int main(){
-    pgmImage firstPic("test.pgm");
-    firstPic.gaussianNoise(20);
-    firstPic.removeNoise(13);
+    int flagStart = 2;
+    int noiseVal = 20;
+    int repairVal = 3;
+    int flag = 0;
+    while (flagStart){
+        std::cout << "quit - 0\nstart - 1\n";
+        std::cin >> flagStart;
+        if (flagStart == 1){
+            pgmImage firstPic("test.pgm");
+            std::cout << "do you want to noise or restore the image?\n1 = noise\n2 = repair" << std::endl;
+            std::cin >> flag;
+            switch (flag){
+            case 1:
+                std::cout << "Enter noise values: " << std::endl;
+                std::cin >> noiseVal;
+                std::cout << std::endl;
+                std::cout << "start make noise..."<< std::endl;
+                firstPic.gaussianNoise(noiseVal);
+                std::cout << "make noise done." << std::endl;
+                break;
+            case 2:
+                std::cout << "Enter repair values: " << std::endl;
+                std::cin >> repairVal;
+                std::cout << std::endl;
+                std::cout << "start make repair..."<< std::endl;
+                firstPic.removeNoise(repairVal);
+                std::cout << "make repair done." << std::endl;
+            default:
+                std::cout << "error" << std::endl;
+                break;
+            }
+        }
+        std::cout << std::endl;
+    }
 }
