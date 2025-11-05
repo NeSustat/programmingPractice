@@ -12,6 +12,7 @@ class pgmImage {
 private:
     int width, height, maxVal;
     int* arr;
+    int* originalArr; // для сравнения с оригиналом
 public:
     pgmImage(std::string nameFile){
         std::ifstream file;
@@ -21,13 +22,16 @@ public:
         std::getline(file, line);
         file >> width >> height >> maxVal;
         arr = new int[width * height];
+        originalArr = new int[width * height];
         for (int i = 0; i < width * height; i++){
             file >> arr[i];
+            originalArr[i] = arr[i]; // сохраняем оригинал
         }
         file.close();
     }
     ~pgmImage(){
         delete[] arr;
+        delete[] originalArr;
     }
     void save(std::string a){
         std::ofstream file;
@@ -85,6 +89,41 @@ public:
         delete[] tempArr;
         save("repair");
     }
+
+    double calculateMSE(int* img1, int* img2){
+        double mse = 0.0;
+        for (int i = 0; i < width * height; i++){
+            double diff = img1[i] - img2[i];
+            mse += diff * diff;
+        }
+        return mse / (width * height);
+    }
+    
+    double calculatePSNR(int* img1, int* img2){
+        double mse = calculateMSE(img1, img2);
+        if (mse == 0) return 100.0;
+        return 20.0 * log10(maxVal / sqrt(mse));
+    }
+    
+    void evaluateEfficiency(){
+        double mseOriginalNoise = calculateMSE(originalArr, arr);
+        double psnrOriginalRepaired = calculatePSNR(originalArr, arr);
+        
+        std::cout << "=== ОЦЕНКА ЭФФЕКТИВНОСТИ ===" << std::endl;
+        std::cout << "MSE (оригинал vs текущее): " << mseOriginalNoise << std::endl;
+        std::cout << "PSNR (оригинал vs текущее): " << psnrOriginalRepaired << " dB" << std::endl;
+        
+        if (psnrOriginalRepaired > 30.0){
+            std::cout << "Качество: ОТЛИЧНОЕ" << std::endl;
+        } else if (psnrOriginalRepaired > 25.0){
+            std::cout << "Качество: ХОРОШЕЕ" << std::endl;
+        } else if (psnrOriginalRepaired > 20.0){
+            std::cout << "Качество: УДОВЛЕТВОРИТЕЛЬНОЕ" << std::endl;
+        } else {
+            std::cout << "Качество: ПЛОХОЕ" << std::endl;
+        }
+        std::cout << "============================" << std::endl;
+    }
 };
 
 int main(){
@@ -97,7 +136,7 @@ int main(){
         std::cin >> flagStart;
         if (flagStart == 1){
             pgmImage firstPic("test.pgm");
-            std::cout << "do you want to noise or restore the image?\n1 = noise\n2 = repair" << std::endl;
+            std::cout << "do you want to noise or restore the image?\n1 = noise\n2 = repair\n3 = evaluate" << std::endl;
             std::cin >> flag;
             switch (flag){
             case 1:
@@ -107,6 +146,7 @@ int main(){
                 std::cout << "start make noise..."<< std::endl;
                 firstPic.gaussianNoise(noiseVal);
                 std::cout << "make noise done." << std::endl;
+                firstPic.evaluateEfficiency();
                 break;
             case 2:
                 std::cout << "Enter repair values: " << std::endl;
@@ -115,6 +155,11 @@ int main(){
                 std::cout << "start make repair..."<< std::endl;
                 firstPic.removeNoise(repairVal);
                 std::cout << "make repair done." << std::endl;
+                firstPic.evaluateEfficiency();
+                break;
+            case 3:
+                firstPic.evaluateEfficiency();
+                break;
             default:
                 std::cout << "error" << std::endl;
                 break;
