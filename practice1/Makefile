@@ -1,10 +1,13 @@
 TARGET = a
-SOURCES = main.cpp struct.cpp
+SOURCES = $(wildcard *.cpp)
+OBJECTS = $(SOURCES:.cpp=.o)
 GXX = g++
 
-$(TARGET): $(SOURCES)
-	$(GXX) $(SOURCES) -o $(TARGET)
+$(TARGET): $(OBJECTS)
+	$(GXX) $(OBJECTS) -o $(TARGET)
 
+%.o: %.cpp
+	$(GXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(TARGET)
+	rm -f $(TARGET) $(OBJECTS)

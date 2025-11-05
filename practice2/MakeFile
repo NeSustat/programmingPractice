@@ -11,3 +11,5 @@ $(TARGET): $(OBJECTS)
 
 clean:
 	rm -f $(TARGET) $(OBJECTS)
+
+# я их везде сделал. накиньте баллы(
